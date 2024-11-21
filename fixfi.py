@@ -106,7 +106,7 @@ class SimpleMarketMaker(MarketMaker):
         
         # Dynamic spread calculation
         base_spread = 0.3
-        volatility_spread = price_range / mid_price * 0.5 if mid_price != 0 else 0
+        volatility_spread = price_range / mid_price * 0.5
         position_spread = abs(holding) / self.max_position * 0.4
         total_spread = base_spread + volatility_spread + position_spread
         
@@ -120,7 +120,7 @@ class SimpleMarketMaker(MarketMaker):
         
         # Dynamic sizing based on prediction confidence and position
         base_size = 15
-        confidence_factor = price_range / mid_price if mid_price != 0 else 0
+        confidence_factor = price_range / mid_price
         
         # Adjust sizes based on position and prediction
         if holding > 0:  # Long position
@@ -149,8 +149,8 @@ class SimpleMarketMaker(MarketMaker):
         
         # Money management
         max_notional = money * 0.2  # Don't use more than 20% of capital per order
-        bid_size = min(bid_size, int(max_notional / new_bid) if new_bid != 0 and not np.isnan(max_notional / new_bid) else 0)
-        ask_size = min(ask_size, int(max_notional / new_ask) if new_ask != 0 and not np.isnan(max_notional / new_ask) else 0)
+        bid_size = min(bid_size, int(max_notional / new_bid))
+        ask_size = min(ask_size, int(max_notional / new_ask))
         
         return new_bid, bid_size, new_ask, ask_size, OrderType.new_limit_order(timestamp, timestamp + 100)
     
